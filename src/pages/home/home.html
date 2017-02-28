@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h2>APP & Go API Tests</h2>
+  <p>
+    In this application, we will test all the API features of APP&Go
+  </p>
+  <form (ngSubmit)="auth()">
+    <ion-list>
+
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="text" [(ngModel)]="user.email" name="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Mot de passe</ion-label>
+        <ion-input type="password" [(ngModel)]="user.password" name="password"></ion-input>
+      </ion-item>
+    </ion-list>
+    <div padding>
+      <button ion-button type="submit">Sign In</button>
+    </div>
+  </form>
+
+
+
+
+
+
+</ion-content>
