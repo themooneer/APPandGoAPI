@@ -28,10 +28,10 @@ export class AboutPage {
       let userId = response.authResponse.userID;
       let params = new Array();
       
-      //Getting name and gender properties
-      Facebook.api("/me?fields=name,gender", params)
+      //Getting user information 
+      Facebook.api("/me", params)
       .then(function(user) {
-       
+       //Getting user profile picture
         user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
          alert(JSON.stringify(user));
           env.output=user;
@@ -58,8 +58,11 @@ export class AboutPage {
     })
   }
   checkConnectivityState(){
+    let env=this;
     Facebook.getLoginStatus().then(function(response) {
-    this.statusChangeCallback(response);
+    env.statusChangeCallback(response);
+    
+    
   });
   }
   // This is called with the results from from Facebook.getLoginStatus().
@@ -93,8 +96,9 @@ export class AboutPage {
     }
   }
    checkLoginState(Facebook) {
+     let env=this;
     Facebook.getLoginStatus(function(response) {
-      this.statusChangeCallback(response)
+      env.statusChangeCallback(response)
     });
   }
 

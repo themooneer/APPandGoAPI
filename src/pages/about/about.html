@@ -10,7 +10,7 @@
 <ion-content padding>
 
     <div padding>
-      <button ion-button (click)="connectFacebook()">Sign In via Facebook</button>
+      <button ion-button (click)="connectFacebook()" *ngIf="connected==false">Sign In via Facebook</button>
     </div>
     <div padding>
       <button ion-button (click)="checkConnectivityState()">Check Connectivity Status</button>
