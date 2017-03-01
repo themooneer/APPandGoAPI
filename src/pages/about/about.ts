@@ -1,3 +1,4 @@
+import { AppandgoUser } from './../../providers/appandgo-user';
 import { Response } from '@angular/http';
 import { Component } from '@angular/core';
 import { NavController, Platform, ToastController } from 'ionic-angular';
@@ -12,7 +13,7 @@ export class AboutPage {
    connected=false;
    
    FB_APP_ID: number = 1368002846591785;
-  constructor(public navCtrl: NavController,public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController,public toastCtrl: ToastController,private service:AppandgoUser) {
         Facebook.browserInit(this.FB_APP_ID);
   }
   // 
@@ -27,15 +28,20 @@ export class AboutPage {
     .then(function(response){
       let userId = response.authResponse.userID;
       let params = new Array();
+      env.service.facebookAuth(userId).subscribe(
+        (resp)=>{
+            alert(resp)
+          });
       
       //Getting user information 
-      Facebook.api("/me", params)
+      Facebook.api("/me?fields=name,gender,age_range,first_name,last_name", params)
       .then(function(user) {
-       //Getting user profile picture
+       
         user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
          alert(JSON.stringify(user));
           env.output=user;
           env.connected=true;
+          
       })
       
       

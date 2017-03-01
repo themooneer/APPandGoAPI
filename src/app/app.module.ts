@@ -6,6 +6,12 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import {AppandgoUser} from '../providers/appandgo-user';
+import { RestangularModule } from 'ng2-restangular';
+// Function for settting the default restangular configuration
+export function RestangularConfigFactory (RestangularProvider) {
+  RestangularProvider.setBaseUrl('http://api.restng2.local/v1');
+  RestangularProvider.setDefaultHeaders({'Authorization': 'Bearer UDXPx-Xko0w4BRKajozCVy20X11MRZs1'});
+}
 @NgModule({
   declarations: [
     MyApp,
@@ -15,7 +21,8 @@ import {AppandgoUser} from '../providers/appandgo-user';
     TabsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+      RestangularModule.forRoot(RestangularConfigFactory)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

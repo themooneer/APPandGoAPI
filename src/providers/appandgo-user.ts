@@ -10,7 +10,7 @@ import {Observable} from 'rxjs/Rx';
 */
 @Injectable()
 export class AppandgoUser {
-  apiUrl ="http://appandgo-customadmin.herokuapp.com/api/auth/login"
+ private apiUrl ="http://appandgo-mounir-customadmin.herokuapp.com/";
   constructor(public http: Http) {
     console.log('Hello AppandgoUser Provider');
   }
@@ -19,7 +19,11 @@ export class AppandgoUser {
      let headers = new Headers({'Content-Type': 'application/json'});
      //let options = new RequestOptions({headers: headers});
      let body = JSON.stringify(data);
-     return this.http.post('http://appandgo-customadmin.herokuapp.com/api/auth/login', data, headers).map((res:Response) => res.json());
+     return this.http.post(this.apiUrl+'api/auth/login', data, headers).map((res:Response) => res.json());
+  }
+  facebookAuth(user):Observable<any>{
+    let headers = new Headers({'Content-Type': 'application/json'});
+    return this.http.post(this.apiUrl+'auth/facebook',user,headers).map((res:Response)=>res.json());
   }
 
 }
