@@ -9,8 +9,8 @@ import {AppandgoUser} from '../providers/appandgo-user';
 import { RestangularModule } from 'ng2-restangular';
 // Function for settting the default restangular configuration
 export function RestangularConfigFactory (RestangularProvider) {
-  RestangularProvider.setBaseUrl('http://api.restng2.local/v1');
-  RestangularProvider.setDefaultHeaders({'Authorization': 'Bearer UDXPx-Xko0w4BRKajozCVy20X11MRZs1'});
+  RestangularProvider.setBaseUrl('http://appandgo-mounir-customadmin.herokuapp.com/api/auth/');
+  RestangularProvider.setDefaultHeaders({'Content-Type': 'application/json'});
 }
 @NgModule({
   declarations: [
