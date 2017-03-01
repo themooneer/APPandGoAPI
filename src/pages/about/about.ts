@@ -8,7 +8,8 @@ import { Facebook, NativeStorage } from 'ionic-native';
   templateUrl: 'about.html'
 })
 export class AboutPage {
-   output="Stand by";
+   output={};
+   connected=false;
    
    FB_APP_ID: number = 1368002846591785;
   constructor(public navCtrl: NavController,public toastCtrl: ToastController) {
@@ -33,21 +34,8 @@ export class AboutPage {
        
         user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
          alert(JSON.stringify(user));
-          env.output=JSON.stringify(user);
-        //now we have the users info, let's save it in the NativeStorage
-        NativeStorage.setItem('user',
-        {
-          name: user.name,
-          gender: user.gender,
-          picture: user.picture
-        })
-        .then(function(){
-          //nav.push(HomePage);
-          this.log(user);
-         
-        }, function (error) {
-          console.log(error);
-        });
+          env.output=user;
+          env.connected=true;
       })
       
       
@@ -55,6 +43,62 @@ export class AboutPage {
       console.log(error);
     });
   }
+
+  checkStatusChangeCallback(){
+      alert('Checking the Status Changes');
+  }
+  disconnectFromFacebook(){
+    let env=this;
+    Facebook.logout().then(function(facebookDisconnectionResponse){
+        alert('Disconnected User');
+        alert(facebookDisconnectionResponse);
+        env.connected=false;
+    },function(error){
+        alert(error);
+    })
+  }
+  checkConnectivityState(){
+    Facebook.getLoginStatus().then(function(response) {
+    this.statusChangeCallback(response);
+  });
+  }
+  // This is called with the results from from Facebook.getLoginStatus().
+   statusChangeCallback(response) {
+    alert('statusChangeCallback');
+    alert(JSON.stringify(response));
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for Facebook.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      alert('Already connected')
+    alert('Fetching your information.... ');
+    Facebook.api('/me',null).then((response)=> {
+      console.log('Successful login for: ' + response.name)
+      alert('Thanks for logging in, ' + response.name + '!')
+    })
+    alert('end of fetching ')
+
+     // this.testAPI(this.Facebook);
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+          alert('not_authorized')
+
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+          alert('not_authorized')
+
+    }
+  }
+   checkLoginState(Facebook) {
+    Facebook.getLoginStatus(function(response) {
+      this.statusChangeCallback(response)
+    });
+  }
+
+
    
   
 }
