@@ -21,7 +21,7 @@
     <div padding>
       <button ion-button (click)="disconnectFromFacebook()" *ngIf="connected">Disconnect</button>
     </div>
-    
+    <ion-input type="text" [(ngModel)]="inputValue" name="email"></ion-input>
     <ion-card *ngIf="connected">
     <img src="{{output.picture}}"/>
     <div class="card-title">{{output.name}}</div>

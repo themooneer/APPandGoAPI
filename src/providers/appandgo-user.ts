@@ -1,3 +1,4 @@
+import { Restangular } from 'ng2-restangular';
 import { Injectable } from '@angular/core';
 import { Http,Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -11,7 +12,7 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class AppandgoUser {
  private apiUrl ="http://appandgo-mounir-customadmin.herokuapp.com/";
-  constructor(public http: Http) {
+  constructor(public http: Http,private restangular:Restangular) {
     console.log('Hello AppandgoUser Provider');
   }
   auth(data):Observable<any>{
@@ -21,9 +22,12 @@ export class AppandgoUser {
      let body = JSON.stringify(data);
      return this.http.post(this.apiUrl+'api/auth/login', data, headers).map((res:Response) => res.json());
   }
-  facebookAuth(userId):Observable<any>{
+  facebookAuthPOSTHttp(userId):Observable<any>{
     let headers = new Headers({'Content-Type': 'application/json'});
     return this.http.post(this.apiUrl+'api/auth/facebook/'+userId,null,headers).map((res:Response)=>res.json());
+  }
+  facebookOAuthGETRestAngular(OauthUser){
+      return this.restangular.allUrl('facebook', OauthUser).get();
   }
 
 }

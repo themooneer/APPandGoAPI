@@ -12,7 +12,7 @@ import { Facebook, NativeStorage } from 'ionic-native';
 export class AboutPage {
    output={};
    connected=false;
-   
+   inputValue ={};
    FB_APP_ID: number = 1368002846591785;
   constructor(public navCtrl: NavController,public toastCtrl: ToastController,private service:AppandgoUser,private restAngularService:Restangular) {
         Facebook.browserInit(this.FB_APP_ID);
@@ -29,7 +29,9 @@ export class AboutPage {
             permissions = ["public_profile"];
             Facebook.login(permissions)
             .then((response)=>{
+              alert("**ACCESS TOKEN =**"+JSON.stringify(response.authResponse.accessToken));
               let userId = response.authResponse.userID;
+              let accessToken=response.authResponse.accessToken;
               let params = new Array();
               //Getting user information 
               Facebook.api("/me?fields=name,gender,age_range,first_name,last_name", params)
@@ -37,20 +39,30 @@ export class AboutPage {
                 user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
                 alert(JSON.stringify(user));
                   this.output=user;
+                  this.inputValue=JSON.stringify(user);
                   this.connected=true;
-                  let authParams={oauthProviderId:user.id}
-                   alert("PROVIDER ID SENT TO API"+JSON.stringify(authParams));
-                  this.service.facebookAuth(user.id).subscribe(
+                 // let authParams={provider:'facebook',oauthUser:user}
+                  // alert("PROVIDER ID SENT TO API"+JSON.stringify(user));
+                  let callback=this.restAngularService.one('facebook',userId).one(accessToken);
+                  //alert(JSON.stringify(callback));
+                  callback.get().subscribe(
+                    (callbackResponse)=>{
+                      if(!callbackResponse.errors){
+                          alert('Bingo! Click ok to see the API Response');
+                          alert(JSON.stringify(callbackResponse.data));
+                      }
+                     
+                    }
+                  );
+                 
+                  
+                  /*
+                  In case of need these code below will use a post method to send OauthProviderId and the provider to the api
+                  this.service.facebookAuthPOSTHttp(user.id).subscribe(
                       (resp)=>{
                           alert(JSON.stringify(resp));
                       });
-                 
-                  /*let auth= this.restAngularService.allUrl('facebook');
-                  auth.post(user.id).subscribe(
-                        (resp)=>{
-                          alert(resp);
-                        });*/
-                  
+                  */                  
               })
               
               
