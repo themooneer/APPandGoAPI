@@ -13,7 +13,10 @@
       <button ion-button (click)="connectFacebook()" *ngIf="connected==false">Sign In via Facebook</button>
     </div>
     <div padding>
-      <button ion-button (click)="checkConnectivityState()">Check Connectivity Status</button>
+      <button ion-button (click)="connectFacebookAPI()" >Login Facebook Laravel API</button>
+    </div>
+    <div padding>
+      <button ion-button (click)="checkConnectivityState()" *ngIf="connected">Check Connectivity Status</button>
     </div>
     <div padding>
       <button ion-button (click)="disconnectFromFacebook()" *ngIf="connected">Disconnect</button>

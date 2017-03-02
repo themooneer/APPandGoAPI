@@ -1,3 +1,4 @@
+import { Restangular } from 'ng2-restangular';
 import { AppandgoUser } from './../../providers/appandgo-user';
 import { Response } from '@angular/http';
 import { Component } from '@angular/core';
@@ -13,7 +14,7 @@ export class AboutPage {
    connected=false;
    
    FB_APP_ID: number = 1368002846591785;
-  constructor(public navCtrl: NavController,public toastCtrl: ToastController,private service:AppandgoUser) {
+  constructor(public navCtrl: NavController,public toastCtrl: ToastController,private service:AppandgoUser,private restAngularService:Restangular) {
         Facebook.browserInit(this.FB_APP_ID);
   }
   // 
@@ -21,54 +22,61 @@ export class AboutPage {
     //Connexion à Facebook
     let permissions = new Array();
     //let nav = this.navCtrl;
-    let env =this;
+    
     //the permissions your facebook app needs from the user
     permissions = ["public_profile"];
     Facebook.login(permissions)
-    .then(function(response){
+    .then((response)=>{
       let userId = response.authResponse.userID;
       let params = new Array();
-      env.service.facebookAuth(userId).subscribe(
-        (resp)=>{
-            alert(resp)
-          });
+      
       
       //Getting user information 
       Facebook.api("/me?fields=name,gender,age_range,first_name,last_name", params)
-      .then(function(user) {
-       
+      .then((user) =>{
         user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
          alert(JSON.stringify(user));
-          env.output=user;
-          env.connected=true;
-          
+          this.output=user;
+          this.connected=true;
+          this.service.facebookAuth(user).subscribe(
+            (resp)=>{
+                alert(resp);
+              });
       })
       
       
-    }, function(error){
+    }, (error)=>{
       console.log(error);
     });
+  }
+  connectFacebookAPI(){
+      //This method will allow us to connect using Facebook Oauth via Laravel API 
+      //First of all we have to use a local Restangular var to handle our post request to /api/auth/{profider}
+     let auth = this.restAngularService.allUrl('facebook');
+     auth.post(null).subscribe(
+       (resp)=>{
+         alert(resp);
+       }
+     );
+     
+      
   }
 
   checkStatusChangeCallback(){
       alert('Checking the Status Changes');
   }
   disconnectFromFacebook(){
-    let env=this;
-    Facebook.logout().then(function(facebookDisconnectionResponse){
+    Facebook.logout().then((facebookDisconnectionResponse)=>{
         alert('Disconnected User');
         alert(facebookDisconnectionResponse);
-        env.connected=false;
-    },function(error){
+        this.connected=false;
+    },(error)=>{
         alert(error);
     })
   }
   checkConnectivityState(){
-    let env=this;
-    Facebook.getLoginStatus().then(function(response) {
-    env.statusChangeCallback(response);
-    
-    
+    Facebook.getLoginStatus().then((response)=> {
+    this.statusChangeCallback(response);
   });
   }
   // This is called with the results from from Facebook.getLoginStatus().
@@ -102,10 +110,12 @@ export class AboutPage {
     }
   }
    checkLoginState(Facebook) {
-     let env=this;
-    Facebook.getLoginStatus(function(response) {
-      env.statusChangeCallback(response)
-    });
+   
+      Facebook.getLoginStatus(
+        (response)=> {
+        this.statusChangeCallback(response)
+      }
+      );
   }
 
 
