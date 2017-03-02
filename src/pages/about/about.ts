@@ -38,17 +38,18 @@ export class AboutPage {
                 alert(JSON.stringify(user));
                   this.output=user;
                   this.connected=true;
-                  let authParams={oauthUser:user,provider:'facebook'}
-                  /*this.service.facebookAuth(authParams).subscribe(
+                  let authParams={oauthProviderId:user.id}
+                   alert("PROVIDER ID SENT TO API"+JSON.stringify(authParams));
+                  this.service.facebookAuth(user.id).subscribe(
                       (resp)=>{
-                          alert(resp);
-                      });*/
-
-                  let auth= this.restAngularService.all();
-                  auth.post(authParams).subscribe(
+                          alert(JSON.stringify(resp));
+                      });
+                 
+                  /*let auth= this.restAngularService.allUrl('facebook');
+                  auth.post(user.id).subscribe(
                         (resp)=>{
                           alert(resp);
-                        });
+                        });*/
                   
               })
               
