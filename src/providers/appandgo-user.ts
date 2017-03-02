@@ -21,9 +21,9 @@ export class AppandgoUser {
      let body = JSON.stringify(data);
      return this.http.post(this.apiUrl+'api/auth/login', data, headers).map((res:Response) => res.json());
   }
-  facebookAuth(user):Observable<any>{
+  facebookAuth(params):Observable<any>{
     let headers = new Headers({'Content-Type': 'application/json'});
-    return this.http.post(this.apiUrl+'api/auth/facebook',user,headers).map((res:Response)=>res.json());
+    return this.http.post(this.apiUrl+'api/auth/',params,headers).map((res:Response)=>res.json());
   }
 
 }

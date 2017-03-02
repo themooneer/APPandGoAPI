@@ -16,38 +16,48 @@ export class AboutPage {
    FB_APP_ID: number = 1368002846591785;
   constructor(public navCtrl: NavController,public toastCtrl: ToastController,private service:AppandgoUser,private restAngularService:Restangular) {
         Facebook.browserInit(this.FB_APP_ID);
+        
   }
   // 
   connectFacebook(){
-    //Connexion à Facebook
-    let permissions = new Array();
-    //let nav = this.navCtrl;
+    //check if the user has already logged in
+        this.checkConnectivityState();
+        if(!this.connected){
+            //Connexion à Facebook
+            let permissions = new Array();
+            //the permissions your facebook app needs from the user
+            permissions = ["public_profile"];
+            Facebook.login(permissions)
+            .then((response)=>{
+              let userId = response.authResponse.userID;
+              let params = new Array();
+              //Getting user information 
+              Facebook.api("/me?fields=name,gender,age_range,first_name,last_name", params)
+              .then((user) =>{
+                user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
+                alert(JSON.stringify(user));
+                  this.output=user;
+                  this.connected=true;
+                  let authParams={oauthUser:user,provider:'facebook'}
+                  /*this.service.facebookAuth(authParams).subscribe(
+                      (resp)=>{
+                          alert(resp);
+                      });*/
+
+                  let auth= this.restAngularService.all();
+                  auth.post(authParams).subscribe(
+                        (resp)=>{
+                          alert(resp);
+                        });
+                  
+              })
+              
+              
+            }, (error)=>{
+              console.log(error);
+            });
+        }
     
-    //the permissions your facebook app needs from the user
-    permissions = ["public_profile"];
-    Facebook.login(permissions)
-    .then((response)=>{
-      let userId = response.authResponse.userID;
-      let params = new Array();
-      
-      
-      //Getting user information 
-      Facebook.api("/me?fields=name,gender,age_range,first_name,last_name", params)
-      .then((user) =>{
-        user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
-         alert(JSON.stringify(user));
-          this.output=user;
-          this.connected=true;
-          this.service.facebookAuth(user).subscribe(
-            (resp)=>{
-                alert(resp);
-              });
-      })
-      
-      
-    }, (error)=>{
-      console.log(error);
-    });
   }
   connectFacebookAPI(){
       //This method will allow us to connect using Facebook Oauth via Laravel API 
@@ -83,11 +93,14 @@ export class AboutPage {
    statusChangeCallback(response) {
     alert('statusChangeCallback');
     alert(JSON.stringify(response));
+    
+    
     // The response object is returned with a status field that lets the
     // app know the current login status of the person.
     // Full docs on the response object can be found in the documentation
     // for Facebook.getLoginStatus().
     if (response.status === 'connected') {
+      this.connected=true;
       // Logged into your app and Facebook.
       alert('Already connected')
     alert('Fetching your information.... ');
@@ -100,12 +113,14 @@ export class AboutPage {
      // this.testAPI(this.Facebook);
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
-          alert('not_authorized')
+          alert('not_authorized');
+          this.connected=false;
 
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
-          alert('not_authorized')
+          alert('not_authorized');
+          this.connected=false;
 
     }
   }

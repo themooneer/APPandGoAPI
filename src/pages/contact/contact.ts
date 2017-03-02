@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController,LoadingController } from 'ionic-angular';
+import { NavController,LoadingController} from 'ionic-angular';
 import {Restangular} from "ng2-restangular";
 
 @Component({
@@ -27,7 +27,10 @@ export class ContactPage {
           (resp)=>{
             console.log(resp);
             if(!resp.errors){
-              alert(JSON.stringify(resp));
+              alert('Click ok to get roles');
+              alert(JSON.stringify(resp.data.user.roles));
+              alert('Click ok to get your permissions');
+              alert(JSON.stringify(resp.data.abilities));              
             }
           }
         );
