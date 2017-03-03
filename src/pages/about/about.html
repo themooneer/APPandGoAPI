@@ -21,9 +21,15 @@
     <div padding>
       <button ion-button (click)="disconnectFromFacebook()" *ngIf="connected">Disconnect</button>
     </div>
-    <ion-input type="text" [(ngModel)]="inputValue" name="email"></ion-input>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Access Token</ion-label>
+        <ion-input type="text" [(ngModel)]="inputValue" name="email"></ion-input>
+      </ion-item>
+    </ion-list>
+
     <ion-card *ngIf="connected">
-    <img src="{{output.picture}}"/>
+    <img src="{{output.avatar}}"/>
     <div class="card-title">{{output.name}}</div>
     <div class="card-subtitle">{{output.gender}}</div>
   </ion-card>

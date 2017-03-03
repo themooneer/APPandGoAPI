@@ -38,19 +38,22 @@ export class AboutPage {
               .then((user) =>{
                 user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
                 alert(JSON.stringify(user));
-                  this.output=user;
-                  this.inputValue=JSON.stringify(user);
+                  
+                  this.inputValue=response.authResponse.accessToken;
                   this.connected=true;
                  // let authParams={provider:'facebook',oauthUser:user}
                   // alert("PROVIDER ID SENT TO API"+JSON.stringify(user));
-                  let callback=this.restAngularService.one('facebook',userId).one(accessToken);
+                  let callback=this.restAngularService.one('facebook',accessToken);
                   //alert(JSON.stringify(callback));
                   callback.get().subscribe(
                     (callbackResponse)=>{
-                      if(!callbackResponse.errors){
-                          alert('Bingo! Click ok to see the API Response');
+                      alert(JSON.stringify(callbackResponse.data));
+                      this.output=callbackResponse.data;
+                      /*if(!callbackResponse.errors){
+                          //alert('Laravel conn');
                           alert(JSON.stringify(callbackResponse.data));
-                      }
+                         
+                      }*/
                      
                     }
                   );
