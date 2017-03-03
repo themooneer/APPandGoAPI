@@ -1,6 +1,6 @@
 # APPandGoAPI
-This is an Ionic2 based application that tests a several Oauth operations via a Laravel API endpoint(CustomAdmin)
-#How to contribute to this application
+This is an Ionic2 based application (Beta version) that tests a several Oauth operations via a Laravel API endpoint(CustomAdmin)
+#How to test this application?
 run $ git clone https://github.com/HamzaouiMounir/APPandGoAPI.git <br />
 Then you have to install all the dependencies in the package.json file <br />
 run $ npm install <br />
