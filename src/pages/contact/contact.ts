@@ -12,7 +12,7 @@ import {AclService} from "angular2-acl";
 export class ContactPage {
   //for testing, we are using an initialized user cridentials (login & password)
   user = {email:'test@test.com',password:'test'};
-  constructor(public navCtrl: NavController,private restangular:APIService, public loading:LoadingController,private aclService:AclService) { 
+  constructor(public navCtrl: NavController,private API:APIService, public loading:LoadingController,private aclService:AclService) { 
   }
 
   testLogin(){
@@ -22,10 +22,10 @@ export class ContactPage {
 
     alert('You re about to connect now'+JSON.stringify(this.user));
     loader.present().then(()=>{
-        let auth= this.restangular.all('auth').all('login');
+        let auth= this.API.all('auth').all('login');
         auth.post(this.user).subscribe(
           (resp)=>{
-            console.log(resp);
+            alert(JSON.stringify(resp));
             if(!resp.errors){
               alert('Click ok to get roles');
               alert(JSON.stringify(resp.data.user.roles));

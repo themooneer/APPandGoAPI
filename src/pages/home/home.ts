@@ -10,6 +10,7 @@ import {Facebook} from 'ionic-native';
 export class HomePage {
 
   user ={};
+  error='';
   constructor(public navCtrl: NavController, private appAndGoUserService:AppandgoUser,public toastCtrl: ToastController) {
 
   }
@@ -17,7 +18,7 @@ export class HomePage {
   auth(){
       this.appAndGoUserService.auth(this.user).subscribe(
       (resp)=>{
-        console.log(resp);
+        alert(JSON.stringify(resp));
         if(!resp.errors){
           this.presentToast();
         }
