@@ -38,6 +38,8 @@ export class HomePage {
               console.log(JSON.stringify(resp.data.abilities)); 
               //Storing abilities and roles to AclService
               this.setAbilitiesAndRolesToAcl(resp.data.abilities,resp.data.userRole);
+            }else{
+              this.error='Email ou mot de passe sont incorrectes';
             }
           }
         );
@@ -48,7 +50,7 @@ export class HomePage {
     this.connected=false;
     this.aclService.data.roles=[];
     this.aclService.data.abilities=[];
-    
+
   }
   //This function will store Abilities and Roles to AclService
   setAbilitiesAndRolesToAcl(abilities,roles){

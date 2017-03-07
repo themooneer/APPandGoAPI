@@ -13,9 +13,11 @@
   <p *ngIf="!connected">
     In this application, we will test all the API features of APP&Go
   </p>
-  <p *ngIf="connected">Hello <b>{{userinfo.name | uppercase}}</b>your have {{aclService.getRoles().length}} roles</p>
+  <p *ngIf="connected">Hello <b>{{userinfo.name | uppercase}}</b>your have {{aclService.getRoles().length}} roles <br>
+      {{aclService.getRoles()}}
+  </p>
   <form (ngSubmit)="auth()" *ngIf="!connected">
-    <p>{{error}}</p>
+    <p style="color:red;">{{error}}</p>
     <ion-list>
 
       <ion-item>
