@@ -1,15 +1,20 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title><h2>APP & Go API Tests</h2></ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="logout()" *ngIf="connected">
+        <ion-icon name="ios-close-circle"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>APP & Go API Tests</h2>
-  <p>
+  <p *ngIf="!connected">
     In this application, we will test all the API features of APP&Go
   </p>
-  <form (ngSubmit)="auth()">
+  <p *ngIf="connected">Hello <b>{{userinfo.name | uppercase}}</b>your have {{aclService.getRoles().length}} roles</p>
+  <form (ngSubmit)="auth()" *ngIf="!connected">
     <p>{{error}}</p>
     <ion-list>
 
@@ -27,6 +32,33 @@
       <button ion-button type="submit">Sign In</button>
     </div>
   </form>
+
+  <ion-list *ngIf="connected">
+      <ion-item>
+        <ion-label>LIST USER</ion-label>
+        <ion-checkbox  checked="{{aclService.can('list.users')}}" disabled="{{!aclService.can('list.users')}}"></ion-checkbox>
+      </ion-item> 
+      <ion-item>
+        <ion-label>ADD USER</ion-label>
+        <ion-checkbox  checked="{{aclService.can('add.user')}}" disabled="{{!aclService.can('add.user')}}"></ion-checkbox>
+      </ion-item> 
+      <ion-item>
+        <ion-label>DELETE USER</ion-label>
+        <ion-checkbox  checked="{{aclService.can('delete.user')}}" disabled="{{!aclService.can('delete.user')}}"></ion-checkbox>
+      </ion-item> 
+      <ion-item>
+        <ion-label>MANAGE USERS</ion-label>
+        <ion-checkbox  checked="{{aclService.can('manage.users')}}" disabled="{{!aclService.can('manage.users')}}"></ion-checkbox>
+      </ion-item> 
+      <ion-item>
+        <ion-label>MANAGE PERMISSIONS</ion-label>
+        <ion-checkbox  checked="{{aclService.can('manage.permissions')}}" disabled="{{!aclService.can('manage.permissions')}}"></ion-checkbox>
+      </ion-item> 
+      <ion-item>
+        <ion-label>MANAGE ROLES</ion-label>
+        <ion-checkbox  checked="{{aclService.can('manage.roles')}}" disabled="{{!aclService.can('manage.roles')}}"></ion-checkbox>
+      </ion-item> 
+  </ion-list>
 
 
 

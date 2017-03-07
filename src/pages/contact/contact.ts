@@ -13,6 +13,7 @@ export class ContactPage {
   //for testing, we are using an initialized user cridentials (login & password)
   user = {email:'test@test.com',password:'test'};
   constructor(public navCtrl: NavController,private API:APIService, public loading:LoadingController,private aclService:AclService) { 
+    
   }
 
   testLogin(){
